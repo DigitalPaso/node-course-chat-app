@@ -27,18 +27,12 @@ io.on ('connection', (socket) => {
     socket.broadcast.emit ('newMessage', 
 	generateMessage ('Admin', `New user joined!`));
 
-    socket.on ('createMessage', function (newMessage) {
+    socket.on ('createMessage', function (newMessage, callback) {
+	console.log ('Server::Received new message via createMessage', newMessage);
 	// emit an event to everyone who is connected, including the sender
 	io.emit ('newMessage', 
 	    generateMessage (newMessage.from, newMessage.text));
-
-	// broadcase an event to everyone who is connected, except the sender
-	/*
-	socket.broadcast.emit ('newMessage', 
-	    generateMessage (newMessage.from, newMessage.text));
-	*/
-
-	console.log ('Server::Received new message via createMessage', newMessage);
+	callback('Server:: Got your message! ' + newMessage.text);
     });
 
     socket.on ('disconnect', () => {

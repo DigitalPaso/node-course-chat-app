@@ -5,17 +5,21 @@ socket.on('connect', function() {
 
 socket.on('disconnect', function() {
     console.log ('Client::Disconnected from the server');
+});
 
-/*
+socket.on('newMessage', function(message) {
+    console.log ('Client::new message', message);
+    var li = jQuery('<li></li>');
+    li.text (`${message.from}: ${message.text}`);
+    $('#messages').append(li);
+});
+
+$('#messageForm').on('submit', function(e) {
+    e.preventDefault();
     socket.emit('createMessage', {
-	from: "elmo@foopity.com",
-	text: "Hello from Elmo!"
+	from: 'User',
+	text: $('[name=message]').val()
+    }, function(message) {
+	console.log ("Client::", message);
     });
-*/
-
 });
-
-socket.on('newMessage', function(data) {
-    console.log ('Client::new message', data);
-});
-
