@@ -4,6 +4,8 @@ const path 	= require('path');
 const http 	= require('http');
 const socketIO 	= require('socket.io');
 
+const {generateMessage} = require('./utils/message.js');
+
 const publicPath = path.join('__dirname', '../public');
 const port = process.env.PORT;
 
@@ -18,33 +20,22 @@ io.on ('connection', (socket) => {
     console.log ('Server::new user connected');
 
     // emit an event to a single connection
-    socket.emit ('newMessage', {
-	from: "Admin",
-	text: "Welcome to the chat app!",
-	createdAt: new Date().getTime()
-    });
+    socket.emit ('newMessage', 
+	generateMessage ('Admin', 'Welcome to the chat app!'));
 
     // broadcast to everyone except the sender 
-    socket.broadcast.emit ('newMessage', {
-	from: 'Admin',
-	text: 'new user joined!',
-	createdAt: new Date().getTime()
-    });
+    socket.broadcast.emit ('newMessage', 
+	generateMessage ('Admin', `New user joined!`));
 
     socket.on ('createMessage', function (newMessage) {
 	// emit an event to everyone who is connected, including the sender
-	io.emit ('newMessage', {
-	    from: newMessage.from, 
-	    text: newMessage.text, 
-	    createdAt: new Date().getTime()
-	});
+	io.emit ('newMessage', 
+	    generateMessage (newMessage.from, newMessage.text));
+
 	// broadcase an event to everyone who is connected, except the sender
 	/*
-	socket.broadcast.emit ('newMessage', {
-	    from: newMessage.from, 
-	    text: newMessage.text, 
-	    createdAt: new Date().getTime()
-	});
+	socket.broadcast.emit ('newMessage', 
+	    generateMessage (newMessage.from, newMessage.text));
 	*/
 
 	console.log ('Server::Received new message via createMessage', newMessage);
