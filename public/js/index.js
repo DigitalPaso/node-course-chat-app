@@ -16,6 +16,6 @@ socket.on('disconnect', function() {
 });
 
 socket.on('newMessage', function(data) {
-    console.log ('Client::Received a new message', data);
+    console.log ('Client::new message', data);
 });
 
