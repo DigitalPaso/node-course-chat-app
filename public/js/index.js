@@ -6,10 +6,13 @@ socket.on('connect', function() {
 socket.on('disconnect', function() {
     console.log ('Client::Disconnected from the server');
 
+/*
     socket.emit('createMessage', {
 	from: "elmo@foopity.com",
 	text: "Hello from Elmo!"
     });
+*/
+
 });
 
 socket.on('newMessage', function(data) {
