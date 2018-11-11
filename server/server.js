@@ -28,11 +28,10 @@ io.on ('connection', (socket) => {
 	generateMessage ('Admin', `New user joined!`));
 
     socket.on ('createMessage', function (newMessage, callback) {
-	console.log ('Server::Received new message via createMessage', newMessage);
 	// emit an event to everyone who is connected, including the sender
 	io.emit ('newMessage', 
 	    generateMessage (newMessage.from, newMessage.text));
-	callback('Server:: Got your message! ' + newMessage.text);
+	callback();
     });
 
     socket.on ('createLocationMessage', function (coords) {
