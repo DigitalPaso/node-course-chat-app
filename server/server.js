@@ -36,7 +36,8 @@ io.on ('connection', (socket) => {
 	users.addUser(socket.id, params.name, params.room);
 
 	// add the new event
-	io.to(params.room).emit ('updateUserList', users.getUserList(params.room));
+	io.to(params.room).emit(
+	    'updateUserList', users.getUserList(params.room));
 
 	// emit an event to a single connection
 	socket.emit ('newMessage', 
@@ -51,14 +52,20 @@ io.on ('connection', (socket) => {
 
     socket.on ('createMessage', function (newMessage, callback) {
 	// emit an event to everyone who is connected, including the sender
-	io.emit ('newMessage', 
-	    generateMessage (newMessage.from, newMessage.text));
+	var user = users.getUser(socket.id);
+	if (user && isRealString(newMessage.text)) {
+	    io.to(user.room).emit ('newMessage', 
+		generateMessage (user.name, newMessage.text));
+	}
 	callback();
     });
 
     socket.on ('createLocationMessage', function (coords) {
-	io.emit('newLocationMessage', generateLocationMessage(
-	    'Position', coords.latitude, coords.longitude));
+	var user = users.getUser(socket.id);
+	if (user) {
+	    io.to(user.room).emit('newLocationMessage', 
+		generateLocationMessage(user.name, coords.latitude, coords.longitude));
+	}
     });
 
     socket.on ('disconnect', () => {
