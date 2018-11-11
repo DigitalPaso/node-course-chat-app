@@ -4,22 +4,32 @@
     <meta charset="utf-8">
     <title>Node chat app</title>
     <script src='./js/libs/jquery-3.3.1.min.js'></script>
+    <script src='./js/libs/moment.js'></script>
+    <link rel='stylesheet' href='./css/styles.css'>
 <head>
-<body>
-    <h1>Welcome to the chat app!</h1>
 
-    <ol id="messages"></ol>
+<body class="chat">
+    <div class="chat__sidebar">
+	<h3>People</h3>
+	<div id="user"></div>
+    </div>
 
-    <form id="messageForm">
-	<input name="message" 
-	    type="text" placeholder="Message" />
-	<button>Send</button>
-    </form>
-    <button id="sendLocation">Send Location</button>
+    <div class="chat__main">
+	<ol id="messages" class="chat__messages"></ol>
+
+	<div class="chat__footer">
+	    <form id="messageForm">
+		<input name="message" 
+		    autofocus autocomplete="off"
+		    type="text" placeholder="Message" />
+		<button>Send</button>
+	    </form>
+	    <button id="sendLocation">Send Location</button>
+	</div>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src='js/index.js'></script>
-
     
 </body>
 
